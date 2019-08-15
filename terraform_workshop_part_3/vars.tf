@@ -7,7 +7,11 @@ variable "cinder-storage-backend" {
 }
 
 variable "volume-name" {
-  default = "maxhanussek-workshop-volume"
+  type = "map" 
+  default = {
+    "master" = "mhanussek-workshop-volume-master"
+    "compute" = "mhanussek-workshop-volume-compute"
+  }
 }
 
 variable "flavors" {

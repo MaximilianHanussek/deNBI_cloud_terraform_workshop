@@ -8,10 +8,17 @@ data "openstack_images_image_v2" "workshop_image_compute" {
   most_recent = true
 }
 
-resource "openstack_blockstorage_volume_v2" "cinder_volume" {
-  name		= "${var.volume-name}"
+resource "openstack_blockstorage_volume_v2" "cinder_volume_master" {
+  name		= "${var.volume-name["master"]}"
   size 		= "${var.cinder-disc-size}"
   volume_type 	= "${var.cinder-storage-backend}"
+}
+
+resource "openstack_blockstorage_volume_v2" "cinder_volume_compute" {
+  count         = "${var.compute_node_count}"
+  name          = "${var.volume-name["compute"]}-${count.index}"
+  size          = "${var.cinder-disc-size}"
+  volume_type   = "${var.cinder-storage-backend}"
 }
 
 resource "openstack_compute_instance_v2" "workshop_vm_master" {
@@ -34,7 +41,7 @@ block_device {
   }
 
 block_device {
-    uuid                  = "${openstack_blockstorage_volume_v2.cinder_volume.id}"
+    uuid                  = "${openstack_blockstorage_volume_v2.cinder_volume_master.id}"
     source_type           = "volume"
     destination_type      = "volume"
     boot_index            = -1
