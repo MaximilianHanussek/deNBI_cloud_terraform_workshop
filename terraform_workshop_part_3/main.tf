@@ -15,7 +15,7 @@ resource "openstack_blockstorage_volume_v2" "cinder_volume_master" {
 }
 
 resource "openstack_blockstorage_volume_v2" "cinder_volume_compute" {
-  count         = "${var.compute_node_count}"
+  count         = "${var.compute-node-count}"
   name          = "${var.volume-name["compute"]}-${count.index}"
   size          = "${var.cinder-disc-size}"
   volume_type   = "${var.cinder-storage-backend}"
@@ -48,4 +48,42 @@ block_device {
     delete_on_termination = true
   }
 }
+
+resource "openstack_compute_instance_v2" "compute" {
+  count           = "${var.compute-node-count}"
+  name            = "${var.vm-name["compute"]}-${count.index}"
+  flavor_name     = "${var.flavors["compute"]}"
+  image_id        = "${data.openstack_images_image_v2.workshop_image_compute.id}"
+  key_pair        = "${var.openstack-key-name}"
+  security_groups = "${var.security-groups}"
+  network {
+    name = "${var.network}"
+  }
+
+block_device {
+    uuid                  = "${data.openstack_images_image_v2.workshop_image_compute.id}"
+    source_type           = "image"
+    destination_type      = "local"
+    boot_index            = 0
+    delete_on_termination = true
+  }
+
+block_device {
+    uuid                  = "${element(openstack_blockstorage_volume_v2.cinder_volume_compute.*.id, count.index)}"
+    source_type           = "volume"
+    destination_type      = "volume"
+    boot_index            = -1
+    delete_on_termination = true
+  }
+
+
+#block_device {
+#    uuid		  = "${count.index != "0" ? "${openstack_blockstorage_volume_v2.cinder_volume_compute.1.id}" : "${openstack_blockstorage_volume_v2.cinder_volume_compute.0.id}"}"
+#    source_type           = "volume"
+#    destination_type      = "volume"
+#    boot_index            = -1
+#    delete_on_termination = true
+#  }
+}
+
 

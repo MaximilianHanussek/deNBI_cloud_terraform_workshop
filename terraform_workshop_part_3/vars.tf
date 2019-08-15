@@ -52,6 +52,6 @@ variable "network" {
   default = "deNBI_user_meeting_internal" 
 }
 
-variable "compute_node_count" {
+variable "compute-node-count" {
   default = 2
 }
