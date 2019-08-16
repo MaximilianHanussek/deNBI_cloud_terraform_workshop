@@ -31,7 +31,7 @@ variable "openstack-key-name" {
 
 variable "security-groups" {
   default = [
-    "terraform-workshop-access-group"
+    "maxhanussek-sec-group"
   ]
 }
 

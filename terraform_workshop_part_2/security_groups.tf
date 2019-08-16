@@ -1,10 +1,10 @@
 resource "openstack_networking_secgroup_v2" "terraform_workshop_sec_group" {
-  name                 = "terraform-workshop-access-group"
+  name                 = "maxhanussek-sec-group"
   description          = "Allow SSH access and ping request"
   delete_default_rules = true
 }
 
-resource "openstack_networking_secgroup_rule_v2" "ingress-public-4-ssh" {
+resource "openstack_networking_secgroup_rule_v2" "ingress_public_4_ssh" {
   direction         = "ingress"
   ethertype         = "IPv4"
   protocol          = "tcp"
@@ -14,7 +14,7 @@ resource "openstack_networking_secgroup_rule_v2" "ingress-public-4-ssh" {
   security_group_id = "${openstack_networking_secgroup_v2.terraform_workshop_sec_group.id}"
 }
 
-resource "openstack_networking_secgroup_rule_v2" "ingress-public-4" {
+resource "openstack_networking_secgroup_rule_v2" "ingress_public_4" {
   direction         = "ingress"
   ethertype         = "IPv4"
   protocol          = "icmp"
@@ -22,13 +22,13 @@ resource "openstack_networking_secgroup_rule_v2" "ingress-public-4" {
   security_group_id = "${openstack_networking_secgroup_v2.terraform_workshop_sec_group.id}"
 }
 
-resource "openstack_networking_secgroup_rule_v2" "egress-public-4" {
+resource "openstack_networking_secgroup_rule_v2" "egress_public_4" {
   direction         = "egress"
   ethertype         = "IPv4"
   security_group_id = "${openstack_networking_secgroup_v2.terraform_workshop_sec_group.id}"
 }
 
-resource "openstack_networking_secgroup_rule_v2" "egress-public-6" {
+resource "openstack_networking_secgroup_rule_v2" "egress_public_6" {
   direction         = "egress"
   ethertype         = "IPv6"
   security_group_id = "${openstack_networking_secgroup_v2.terraform_workshop_sec_group.id}"

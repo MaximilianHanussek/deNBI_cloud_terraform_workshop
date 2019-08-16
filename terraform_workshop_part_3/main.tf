@@ -75,15 +75,4 @@ block_device {
     boot_index            = -1
     delete_on_termination = true
   }
-
-
-#block_device {
-#    uuid		  = "${count.index != "0" ? "${openstack_blockstorage_volume_v2.cinder_volume_compute.1.id}" : "${openstack_blockstorage_volume_v2.cinder_volume_compute.0.id}"}"
-#    source_type           = "volume"
-#    destination_type      = "volume"
-#    boot_index            = -1
-#    delete_on_termination = true
-#  }
 }
-
-
