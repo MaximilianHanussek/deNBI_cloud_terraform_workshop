@@ -30,13 +30,22 @@ variable "vm-name" {
   }
 }
 
+#variable "workshop-image" {
+#  type = "map"
+#  default = {
+#    "master" = "unicore_master_centos_20190712"
+#    "compute" = "unicore_compute_centos_20190719"
+#  }
+#}
+
 variable "workshop-image" {
   type = "map"
   default = {
-    "master" = "unicore_master_centos_20190712"
-    "compute" = "unicore_compute_centos_20190719"
+    "master" = "beeOND_CentOS7"
+    "compute" = "beeOND_CentOS7"
   }
 }
+
 
 variable "openstack-key-name" {
   default = "workshop"
