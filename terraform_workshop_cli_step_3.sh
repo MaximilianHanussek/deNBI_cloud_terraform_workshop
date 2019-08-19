@@ -69,6 +69,87 @@ beeond start -n /home/centos/beeond_nodefile -d /mnt/ -c /beeond/ -a /home/cento
 #Stop beeond
 beeond stop -n /home/centos/beeond_nodefile -L -d -a /home/centos/workshop_key -z centos
 
+Output
+INFO: Using status information file: /tmp/beeond.tmp
+INFO: Checking reachability of host 192.168.19.8
+INFO: Checking reachability of host 192.168.19.5
+INFO: Checking reachability of host 192.168.19.10
+INFO: Number of storage servers automatically set to 3
+INFO: Starting beegfs-mgmtd processes
+INFO: Management daemon log: /var/log/beegfs-mgmtd_20190819-131437.log
+INFO: Starting beegfs-mgmtd on host: 192.168.19.8
+
+INFO: Starting beegfs-storage processes
+INFO: Storage server log: /var/log/beegfs-storage_20190819-131437.log
+INFO: Starting beegfs-storage on host: 192.168.19.8
+INFO: Starting beegfs-storage on host: 192.168.19.5
+INFO: Starting beegfs-storage on host: 192.168.19.10
+
+INFO: Starting beegfs-meta processes
+INFO: Metadata server log: /var/log/beegfs-meta_20190819-131437.log
+INFO: Starting beegfs-meta on host: 192.168.19.8
+
+INFO: Starting beegfs-client processes
+INFO: Client log: /var/log/beegfs-client_20190819-131437.log
+INFO: Starting beegfs-client on host: 192.168.19.8
+INFO: Starting beegfs-client on host: 192.168.19.5
+INFO: Starting beegfs-client on host: 192.168.19.10
+
+
+#Create file in shared filesystem and check on other node
+echo "Hello World" > /beeond/hello_world.txt
+
+#Delete Hello World file
+rm -f /beeond/hello_world.txt
+
+
+### Create Batch system (TORQUE) ###
+
+# Print out hostnames
+echo $HOSTNAME OR hostname
+
+#Edit host file
+vim /etc/hosts
+
+#master_IP master_hostname
+#compute_0_IP compute_0_hostname
+#compute_1_IP compite_1_hostname
+
+#Distribute to both compute nodes (so do this 2 times)
+scp -i workshop_key /etc/hosts centos@compute_IP:/etc/hosts
+
+#Set hostname of master node for TORQUE, do this for all nodes (so do this 3 times)
+sudo su -
+echo "mhanussek-workshop-vm-master.novalocal" > /var/spool/torque/server_name
+
+#Enable and start pbs_server systemd service
+sudo systemctl enable pbs_server
+sudo systemctl start pbs_server
+
+#Enable and start trqauthd systemd service
+sudo systemctl enable trqauthd
+sudo systemctl start trqauthd
+
+#Start pbs_sched
+sudo env "PATH=$PATH" pbs_sched
+
+#Set compute nodes for TORQUE (so do this 2 times)
+sudo env "PATH=$PATH" qmgr -c "create node compute_host_name"
+
+
+#Start client components on both compute nodes
+ssh -n -o StrictHostKeyChecking=no -i workshop_key centos@host_ip sudo systemctl enable pbs_mom
+ssh -n -o StrictHostKeyChecking=no -i workshop_key centos@host_ip sudo systemctl start pbs_mom
+
+sudo env "PATH=$PATH" qmgr -c "set server auto_node_np = True"
+
+
+
+
+
+
+
+
 
 
 
