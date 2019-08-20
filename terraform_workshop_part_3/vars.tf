@@ -38,15 +38,6 @@ variable "workshop-image" {
   }
 }
 
-#variable "workshop-image" {
-#  type = "map"
-#  default = {
-#    "master" = "beeOND_CentOS7"
-#    "compute" = "beeOND_CentOS7"
-#  }
-#}
-
-
 variable "openstack-key-name" {
   default = "workshop"
 }

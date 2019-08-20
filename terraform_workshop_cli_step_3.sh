@@ -65,9 +65,6 @@ sudo chmod 777 /opt/beegfs/lib/beegfs-ondemand-stoplocal
 # Start beeond
 beeond start -n /home/centos/beeond_nodefile -d /mnt/ -c /beeond/ -a /home/centos/workshop_key -z centos
 
-# Stop beeond
-beeond stop -n /home/centos/beeond_nodefile -L -d -a /home/centos/workshop_key -z centos
-
 Output
 INFO: Using status information file: /tmp/beeond.tmp
 INFO: Checking reachability of host 192.168.19.8
@@ -94,6 +91,8 @@ INFO: Starting beegfs-client on host: 192.168.19.8
 INFO: Starting beegfs-client on host: 192.168.19.5
 INFO: Starting beegfs-client on host: 192.168.19.10
 
+# Stop beeond
+#beeond stop -n /home/centos/beeond_nodefile -L -d -a /home/centos/workshop_key -z centos
 
 # Create file in shared filesystem and check on other node (ssh)
 echo "Hello World" > /beeond/hello_world.txt
@@ -118,11 +117,11 @@ vim /etc/hosts
 #compute_1_IP compite_1_hostname
 
 # Distribute to both compute nodes (so do this 2 times)
-scp -i workshop_key /etc/hosts centos@compute_IP:/etc/hosts
+scp -i workshop_key /etc/hosts centos@COMPUTE_NODE_IP:/etc/hosts
 
 # Set hostname of master node for TORQUE, do this for all nodes (so do this 3 times)
 sudo su -
-echo "mhanussek-workshop-vm-master.novalocal" > /var/spool/torque/server_name
+echo "HOSTNAME_MASTER" > /var/spool/torque/server_name
 
 # Enable and start pbs_server systemd service
 sudo systemctl enable pbs_server
