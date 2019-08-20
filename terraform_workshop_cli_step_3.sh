@@ -56,9 +56,6 @@ vim beeond_nodefile
 #compute_0_IP
 #compute_1_IP
 
-# Create shared file system director
-# Already done in the step of image creation
-
 # Need to add some custom files 
 sudo wget https://s3.denbi.uni-tuebingen.de/max/terraform_workshop/beeond -O /opt/beegfs/sbin/beeond
 sudo chmod 777 /opt/beegfs/sbin/beeond
@@ -98,7 +95,7 @@ INFO: Starting beegfs-client on host: 192.168.19.5
 INFO: Starting beegfs-client on host: 192.168.19.10
 
 
-# Create file in shared filesystem and check on other node
+# Create file in shared filesystem and check on other node (ssh)
 echo "Hello World" > /beeond/hello_world.txt
 
 # Delete Hello World file
@@ -108,10 +105,12 @@ rm -f /beeond/hello_world.txt
 
 ### Create Batch system (TORQUE) ###
 
-# Print out hostnames
+# Go back to the master node
+
+# Print out hostnames of all nodes (so do this 3 times)
 echo $HOSTNAME OR hostname
 
-# Edit host file
+# Edit host file on the master node
 vim /etc/hosts
 
 #master_IP master_hostname
@@ -139,18 +138,18 @@ sudo env "PATH=$PATH" pbs_sched
 # Set compute nodes for TORQUE (so do this 2 times)
 sudo env "PATH=$PATH" qmgr -c "create node compute_host_name"
 
-
 # Start client components on both compute nodes
 ssh -n -o StrictHostKeyChecking=no -i workshop_key centos@host_ip sudo systemctl enable pbs_mom
 ssh -n -o StrictHostKeyChecking=no -i workshop_key centos@host_ip sudo systemctl start pbs_mom
 
-# Set number of CPU cores automatically 
+# Set number of CPU cores of the compute nodes automatically 
 sudo env "PATH=$PATH" qmgr -c "set server auto_node_np = True"
 
 # Check if compute nodes have been recognized
 pbsnodes
 
 # Create job script with following content
+cd /beeond/
 vim hello_world
 
 #!/bin/bash
@@ -163,16 +162,16 @@ whoami
 sleep 15
 
 # Send job to cluster
-cd /beeond/
 qsub hello_world
 
 # Check job status with
-qstat -a
+qstat -a 
+OR
+qstat -f
 
 # Check output files (stdout, stderr)
 cat hello_world.e0
 cat Hello_world.o0
-
 
 # Congratulations you have a working cluster setup in the cloud :-)
 
