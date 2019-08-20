@@ -45,6 +45,8 @@ exit
 
 #--------------------------------------------------------------------------------
 
+### Create shared file system ###
+
 # Login to master
 ssh -i .ssh/workshop_key centos@192.168.19.xxx
 
@@ -66,7 +68,7 @@ sudo chmod 777 /opt/beegfs/lib/beegfs-ondemand-stoplocal
 # Start beeond
 beeond start -n /home/centos/beeond_nodefile -d /mnt/ -c /beeond/ -a /home/centos/workshop_key -z centos
 
-#Stop beeond
+# Stop beeond
 beeond stop -n /home/centos/beeond_nodefile -L -d -a /home/centos/workshop_key -z centos
 
 Output
@@ -96,11 +98,12 @@ INFO: Starting beegfs-client on host: 192.168.19.5
 INFO: Starting beegfs-client on host: 192.168.19.10
 
 
-#Create file in shared filesystem and check on other node
+# Create file in shared filesystem and check on other node
 echo "Hello World" > /beeond/hello_world.txt
 
-#Delete Hello World file
+# Delete Hello World file
 rm -f /beeond/hello_world.txt
+
 
 
 ### Create Batch system (TORQUE) ###
@@ -108,40 +111,72 @@ rm -f /beeond/hello_world.txt
 # Print out hostnames
 echo $HOSTNAME OR hostname
 
-#Edit host file
+# Edit host file
 vim /etc/hosts
 
 #master_IP master_hostname
 #compute_0_IP compute_0_hostname
 #compute_1_IP compite_1_hostname
 
-#Distribute to both compute nodes (so do this 2 times)
+# Distribute to both compute nodes (so do this 2 times)
 scp -i workshop_key /etc/hosts centos@compute_IP:/etc/hosts
 
-#Set hostname of master node for TORQUE, do this for all nodes (so do this 3 times)
+# Set hostname of master node for TORQUE, do this for all nodes (so do this 3 times)
 sudo su -
 echo "mhanussek-workshop-vm-master.novalocal" > /var/spool/torque/server_name
 
-#Enable and start pbs_server systemd service
+# Enable and start pbs_server systemd service
 sudo systemctl enable pbs_server
 sudo systemctl start pbs_server
 
-#Enable and start trqauthd systemd service
+# Enable and start trqauthd systemd service
 sudo systemctl enable trqauthd
 sudo systemctl start trqauthd
 
-#Start pbs_sched
+# Start pbs_sched
 sudo env "PATH=$PATH" pbs_sched
 
-#Set compute nodes for TORQUE (so do this 2 times)
+# Set compute nodes for TORQUE (so do this 2 times)
 sudo env "PATH=$PATH" qmgr -c "create node compute_host_name"
 
 
-#Start client components on both compute nodes
+# Start client components on both compute nodes
 ssh -n -o StrictHostKeyChecking=no -i workshop_key centos@host_ip sudo systemctl enable pbs_mom
 ssh -n -o StrictHostKeyChecking=no -i workshop_key centos@host_ip sudo systemctl start pbs_mom
 
+# Set number of CPU cores automatically 
 sudo env "PATH=$PATH" qmgr -c "set server auto_node_np = True"
+
+# Check if compute nodes have been recognized
+pbsnodes
+
+# Create job script with following content
+vim hello_world
+
+#!/bin/bash
+#PBS -l nodes=1:ppn=1
+#PBS -l walltime=00:00:59
+echo "Hello World"
+date
+hostname
+whoami
+sleep 15
+
+# Send job to cluster
+cd /beeond/
+qsub hello_world
+
+# Check job status with
+qstat -a
+
+# Check output files (stdout, stderr)
+cat hello_world.e0
+cat Hello_world.o0
+
+
+# Congratulations you have a working cluster setup in the cloud :-)
+
+
 
 
 
