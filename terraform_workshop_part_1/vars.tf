@@ -25,10 +25,6 @@ variable "workshop-image" {
   default = "CentOS"
 }
 
-#variable "openstack-key-name" {
-#  default = "maximilian-demo"
-#}
-
 variable "workshop-key-name" {
   default = "maxhanussek-keypair"
 }
@@ -44,6 +40,5 @@ variable "security-groups" {
 }
 
 variable "network" {
-  default = "deNBI_user_meeting_internal"
-   
+  default = "deNBI_user_meeting_internal"   
 }
