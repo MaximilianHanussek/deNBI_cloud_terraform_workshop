@@ -1,7 +1,7 @@
 # Login to jumphost, enter password
 ssh -i /Path/to/key centos@193.196.20.75
 
-#------------------------------------------------------------------------------
+#------------Start LOOP 3 times------------------------------------------------
 
 # Perform following two steps on all your machines (in the end 3 times) 
 # Login to your cluster VMs (master, compute), enter password 
@@ -43,7 +43,7 @@ rm /mnt/test.txt
 # Go back to jumphost
 exit
 
-#--------------------------------------------------------------------------------
+#-----------Stop LOOP-------------------------------------------------------------
 
 ### Create shared file system ###
 
