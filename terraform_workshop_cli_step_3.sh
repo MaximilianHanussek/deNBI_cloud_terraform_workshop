@@ -45,7 +45,9 @@ exit
 
 #-----------Stop LOOP-------------------------------------------------------------
 
+#################################
 ### Create shared file system ###
+#################################
 
 # Login to master
 ssh -i .ssh/workshop_key centos@192.168.19.xxx
@@ -65,31 +67,31 @@ sudo chmod 777 /opt/beegfs/lib/beegfs-ondemand-stoplocal
 # Start beeond
 beeond start -n /home/centos/beeond_nodefile -d /mnt/ -c /beeond/ -a /home/centos/workshop_key -z centos
 
-Output
-INFO: Using status information file: /tmp/beeond.tmp
-INFO: Checking reachability of host 192.168.19.8
-INFO: Checking reachability of host 192.168.19.5
-INFO: Checking reachability of host 192.168.19.10
-INFO: Number of storage servers automatically set to 3
-INFO: Starting beegfs-mgmtd processes
-INFO: Management daemon log: /var/log/beegfs-mgmtd_20190819-131437.log
-INFO: Starting beegfs-mgmtd on host: 192.168.19.8
+#Output
+#INFO: Using status information file: /tmp/beeond.tmp
+#INFO: Checking reachability of host 192.168.19.8
+#INFO: Checking reachability of host 192.168.19.5
+#INFO: Checking reachability of host 192.168.19.10
+#INFO: Number of storage servers automatically set to 3
+#INFO: Starting beegfs-mgmtd processes
+#INFO: Management daemon log: /var/log/beegfs-mgmtd_20190819-131437.log
+#INFO: Starting beegfs-mgmtd on host: 192.168.19.8
 
-INFO: Starting beegfs-storage processes
-INFO: Storage server log: /var/log/beegfs-storage_20190819-131437.log
-INFO: Starting beegfs-storage on host: 192.168.19.8
-INFO: Starting beegfs-storage on host: 192.168.19.5
-INFO: Starting beegfs-storage on host: 192.168.19.10
+#INFO: Starting beegfs-storage processes
+#INFO: Storage server log: /var/log/beegfs-storage_20190819-131437.log
+#INFO: Starting beegfs-storage on host: 192.168.19.8
+#INFO: Starting beegfs-storage on host: 192.168.19.5
+#INFO: Starting beegfs-storage on host: 192.168.19.10
 
-INFO: Starting beegfs-meta processes
-INFO: Metadata server log: /var/log/beegfs-meta_20190819-131437.log
-INFO: Starting beegfs-meta on host: 192.168.19.8
+#INFO: Starting beegfs-meta processes
+#INFO: Metadata server log: /var/log/beegfs-meta_20190819-131437.log
+#INFO: Starting beegfs-meta on host: 192.168.19.8
 
-INFO: Starting beegfs-client processes
-INFO: Client log: /var/log/beegfs-client_20190819-131437.log
-INFO: Starting beegfs-client on host: 192.168.19.8
-INFO: Starting beegfs-client on host: 192.168.19.5
-INFO: Starting beegfs-client on host: 192.168.19.10
+#INFO: Starting beegfs-client processes
+#INFO: Client log: /var/log/beegfs-client_20190819-131437.log
+#INFO: Starting beegfs-client on host: 192.168.19.8
+#INFO: Starting beegfs-client on host: 192.168.19.5
+#INFO: Starting beegfs-client on host: 192.168.19.10
 
 # Stop beeond
 #beeond stop -n /home/centos/beeond_nodefile -L -d -a /home/centos/workshop_key -z centos
@@ -101,8 +103,9 @@ echo "Hello World" > /beeond/hello_world.txt
 rm -f /beeond/hello_world.txt
 
 
-
+####################################
 ### Create Batch system (TORQUE) ###
+####################################
 
 # Go back to the master node
 
@@ -172,7 +175,7 @@ qstat -f
 cat hello_world.e0
 cat Hello_world.o0
 
-# Congratulations you have a working cluster setup in the cloud :-)
+# Congratulations you have a working virtual cluster in the cloud :-)
 
 
 
