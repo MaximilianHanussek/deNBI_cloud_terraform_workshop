@@ -17,8 +17,8 @@ variable "volume-name" {
 variable "flavors" {
   type = "map"
   default = {
-    "master" = "de.NBI default"
-    "compute" = "de.NBI default"
+    "master" = "workshop"
+    "compute" = "workshop"
   }
 }
 
