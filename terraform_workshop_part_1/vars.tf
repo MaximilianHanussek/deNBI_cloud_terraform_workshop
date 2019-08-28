@@ -40,5 +40,5 @@ variable "security-groups" {
 }
 
 variable "network" {
-  default = "deNBI_user_meeting_internal"   
+  default = "deNBI_user_meeting_internal"
 }

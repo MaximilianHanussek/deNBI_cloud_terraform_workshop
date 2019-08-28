@@ -1,5 +1,5 @@
 resource "openstack_networking_secgroup_v2" "terraform_workshop_sec_group" {
-  name                 = "maxhanussek-sec-group"
+  name                 = "${var.security-groups[0]}"
   description          = "Allow SSH access and ping request"
   delete_default_rules = true
 }
