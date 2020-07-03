@@ -11,7 +11,7 @@ variable "volume-name" {
 }
 
 variable "flavors" {
-  type = "map"
+  type = map
   default = {
     "workshop-vm" = "workshop"
   }
@@ -22,7 +22,7 @@ variable "vm-name" {
 }
 
 variable "workshop-image" {
-  default = "CentOS"
+  default = "CentOS 7.7"
 }
 
 variable "workshop-key-name" {
