@@ -13,7 +13,7 @@ variable "volume-name" {
 variable "flavors" {
   type = map
   default = {
-    "workshop-vm" = "workshop"
+    "workshop-vm" = "de.NBI default"
   }
 }
 
@@ -22,7 +22,7 @@ variable "vm-name" {
 }
 
 variable "workshop-image" {
-  default = "CentOS 7.7"
+  default = "CentOS 7.7 2020-07-07"
 }
 
 variable "workshop-key-name" {
@@ -40,5 +40,5 @@ variable "security-groups" {
 }
 
 variable "network" {
-  default = "deNBI_user_meeting_internal"
+  default = "denbi_uni_tuebingen_external2"
 }
